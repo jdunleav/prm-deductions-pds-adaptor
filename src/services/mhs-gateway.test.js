@@ -2,7 +2,7 @@ import axios from 'axios';
 import { sendMessage } from './mhs-gateway';
 import config from '../config';
 
-jest.mock('axios', () => ({ post: jest.fn().mockResolvedValue('some-response') }));
+jest.mock('axios', () => ({ post: jest.fn().mockResolvedValue({ data: 'some-response-data' }) }));
 jest.mock('../config/logging');
 
 describe('mhs-gateway', () => {
@@ -16,7 +16,8 @@ describe('mhs-gateway', () => {
             headers: {
               'Interaction-Id': 'QUPA_IN040000UK32',
               'sync-async': false,
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'from-asid': config.deductionsAsid
             }
           }
         );
@@ -25,7 +26,7 @@ describe('mhs-gateway', () => {
 
     it('should return the response body', () => {
       return sendMessage('some-message').then(response => {
-        expect(response).toEqual('some-response');
+        expect(response).toEqual('some-response-data');
       });
     });
 

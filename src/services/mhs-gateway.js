@@ -11,13 +11,14 @@ export const sendMessage = message =>
         headers: {
           'Interaction-Id': 'QUPA_IN040000UK32',
           'sync-async': false,
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'from-asid': config.deductionsAsid
         }
       }
     )
-    .then(patientDetails => {
+    .then(response => {
       logger.info(`Received details of patient from MHS`);
-      return patientDetails;
+      return response.data;
     })
     .catch(error => {
       logger.error('There was an error when sending a request to MHS', error);
